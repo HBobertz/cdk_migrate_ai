@@ -1,21 +1,14 @@
 import json
 import os
+import sys
 import glob
 
 def process_template():
+    file_path = sys.argv[1]
+    app_path = sys.argv[2]
     # Define the directory path
-    directory_path = "cdk.out"
 
-    # Find files ending with "template.json" in the directory and its subdirectories
-    file_path = None
-    for root, dirs, files in os.walk(directory_path):
-        for file in files:
-            if file.endswith("template.json"):
-                file_path = os.path.join(root, file)
-                break
-        if file_path:
-            break
-
+    template_json = ""
     # Check if a file was found
     if file_path:
         # Read the JSON file
@@ -46,9 +39,15 @@ def process_template():
         template_json = template_json.replace('\n', '\\n')
 
         # Print the modified JSON without new line characters
-        print(template_json)
     else:
         print("No template.json file found in the directory.")
+    app_str = ""
+    if app_path:
+        j = open(app_path, "r")
+        app_str = j.read()
+        app_str = app_str.replace('\n', '\\n')
+    f = open(file_path, "w")
+    f.write(f'{{ "prompt": "{template_json}", "completion": "{app_str}"}}')
 
 # Call the function
 process_template()
