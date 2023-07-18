@@ -45,6 +45,8 @@ def process_template():
     if app_path:
         j = open(app_path, "r")
         app_str = j.read()
+        app_str = app_str.replace('\\', '\\\\')
+        app_str = app_str.replace('"', '\\"')
         app_str = app_str.replace('\n', '\\n')
     f = open(file_path, "w")
     f.write(f'{{ "prompt": "{template_json}", "completion": "{app_str}"}}')
