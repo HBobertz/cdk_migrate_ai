@@ -4,9 +4,25 @@ import sys
 import glob
 
 def process_template():
-    file_path = sys.argv[1]
-    app_path = sys.argv[2]
+    # file_path = sys.argv[1]
+    # app_path = sys.argv[2]
+
     # Define the directory path
+    directory_path = "cdk.out"
+
+    # Find files ending with "template.json" in the directory and its subdirectories
+    file_path = None
+    for root, dirs, files in os.walk(directory_path):
+        for file in files:
+            if file.endswith("template.json"):
+                file_path = os.path.join(root, file)
+                break
+        if file_path:
+            break
+        
+    app_path = None
+    if os.path.isfile('app.ts'):
+        app_path = os.path.abspath('app.ts')
 
     template_json = ""
     # Check if a file was found
@@ -48,8 +64,8 @@ def process_template():
         app_str = app_str.replace('\\', '\\\\')
         app_str = app_str.replace('"', '\\"')
         app_str = app_str.replace('\n', '\\n')
-    f = open(file_path, "w")
-    f.write(f'{{ "prompt": "{template_json}", "completion": "{app_str}"}}')
+    f = open('/Users/bobertzh/work/hackathon/training_data/the_data.jsonl', "a")
+    f.write(f'{{ "prompt": "{template_json}", "completion": "{app_str}"}}\n')
 
 # Call the function
 process_template()
