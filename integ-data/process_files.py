@@ -41,7 +41,7 @@ def process_module(modulePath):
 
                 if snapshot_test_json:
                     cdk_code = process_integ_ts_file(os.path.join(modulePath, 'test', file))
-                    str_to_write_to_file = f'{{ "prompt": "{ snapshot_test_json }", "completion": "{ cdk_code }"}}'
+                    str_to_write_to_file = f'{{ "prompt": "{ snapshot_test_json }", "completion": "{ cdk_code }"}}\n'
                     example_cases.append(str_to_write_to_file)
 
     return example_cases
